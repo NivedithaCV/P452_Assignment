@@ -279,47 +279,28 @@ def gauss_sidel(A,B):
     return x
 
 def guass_s_inverse(A,tol):
-    a=A
-    aj=np.asarray(A)
-    bij = [[0] for j in range(len(A))]
 
-    ings = np.zeros((len(a), len(a)))  # Pre-allocate matrix
+    B = [[0] for j in range(len(A))]
+
+    matrix = np.zeros((len(A), len(A)))  # Pre-allocate matrix
     for i in range(len(A)):
-        bij[i]==1
-        zz = gauss_sidel(aj, bij)
-        for j in range(1, len(a)):
-            ings[:, i] = zz[0]
-    print(zz)
+        B[i]==1
+        column = gauss_sidel(A, B)
+        for j in range(1, len(A)):
+            matrix[:, i] = column[0]
+    print(column)
     return ings
 def inv_g_s(A):
     a=A
     aj = np.array(A)
     bij=np.identity(len(A))
-    ings = np.zeros((len(a), len(a)))  # Pre-allocate matrix
+    marix = np.zeros((len(a), len(a)))  # Pre-allocate matrix
     for i in range(6):
-        zz,error,iteration = gauss_seidel(aj, bij[i], 1e-4)
+        column,error,iteration = gauss_seidel(aj, bij[i], 1e-4)
         for j in range(1, 6):
-            ings[:, i] = zz[0]
-    return(ings,error,iteration)
-def gauss_seidel(A, b, tolerance, max_iterations=10000):
+            matrix[:, i] = column[0]
+    return(matrix,error,iteration)
 
-    x = np.zeros_like(b, dtype=np.double)
-    er = np.array([])
-    kk = np.array([])
-    # Iterate
-    for k in range(max_iterations):
-        x_old = x.copy()
-
-        # Loop over rows
-        for i in range(A.shape[0]):
-            x[i] = (b[i] - np.dot(A[i, :i], x[:i]) - np.dot(A[i, (i+1):], x_old[(i+1):])) / A[i, i]
-        er = np.append(er, np.linalg.norm(x - x_old, ord=np.inf) / np.linalg.norm(x, ord=np.inf))
-        kk = np.append(kk, k)
-        # Stop condition
-        if np.linalg.norm(x - x_old, ord=np.inf) / np.linalg.norm(x, ord=np.inf) < tolerance:
-            break
-
-    return x, er, kk
 
 def conjugate_gradient(A,B,x):
     # residual
