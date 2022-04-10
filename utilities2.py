@@ -291,8 +291,16 @@ def guass_s_inverse(A,tol):
             ings[:, i] = zz[0]
     print(zz)
     return ings
-
-
+def inv_g_s(A):
+    a=A
+    aj = np.array(A)
+    bij=np.identity(len(A))
+    ings = np.zeros((len(a), len(a)))  # Pre-allocate matrix
+    for i in range(6):
+        zz,error,iteration = gauss_seidel(aj, bij[i], 1e-4)
+        for j in range(1, 6):
+            ings[:, i] = zz[0]
+    return(ings,error,iteration)
 def gauss_seidel(A, b, tolerance, max_iterations=10000):
 
     x = np.zeros_like(b, dtype=np.double)
